@@ -60,12 +60,9 @@ export default class GoTrue {
 
   login(email, password, remember) {
     this._setRememberHeaders(remember);
-    return this._request('/token', {
+    return this._request('/token?grant_type=password', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `grant_type=password&username=${encodeURIComponent(
-        email,
-      )}&password=${encodeURIComponent(password)}`,
+      body: JSON.stringify({ email, password }),
     }).then((response) => {
       User.removeSavedSession();
       return this.createUser(response, remember);
