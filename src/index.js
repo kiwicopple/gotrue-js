@@ -2,7 +2,7 @@ import API, { JSONHTTPError } from 'micro-api-client';
 import User from './user';
 
 const HTTPRegexp = /^http:\/\//;
-const defaultApiURL = `/.netlify/identity`;
+const defaultApiURL = `/auth/v1`;
 
 export default class GoTrue {
   constructor({ APIUrl = defaultApiURL, APIKey = '', audience = '', setCookie = false } = {}) {
