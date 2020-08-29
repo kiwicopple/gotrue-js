@@ -5,7 +5,7 @@ const HTTPRegexp = /^http:\/\//;
 const defaultApiURL = `/.netlify/identity`;
 
 export default class GoTrue {
-  constructor({ APIUrl = defaultApiURL, audience = '', setCookie = false } = {}) {
+  constructor({ APIUrl = defaultApiURL, APIKey = '', audience = '', setCookie = false } = {}) {
     if (APIUrl.match(HTTPRegexp)) {
       console.warn(
         'Warning:\n\nDO NOT USE HTTP IN PRODUCTION FOR GOTRUE EVER!\nGoTrue REQUIRES HTTPS to work securely.',
@@ -18,7 +18,15 @@ export default class GoTrue {
 
     this.setCookie = setCookie;
 
-    this.api = new API(APIUrl);
+    this.api = new API(
+      APIUrl, 
+      { 
+        defaultHeaders: 
+        {
+          'apikey': APIKey
+        }
+      }
+    );
   }
 
   _request(path, options = {}) {
