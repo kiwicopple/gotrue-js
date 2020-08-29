@@ -32,7 +32,7 @@ auth = new GoTrue({
 
 ### GoTrue configuration
 
-APIUrl: The absolute path of the GoTrue endpoint. To find the `APIUrl`, go to `API Settings` page of your Supabase project dashboard.
+APIUrl: The absolute path of the GoTrue endpoint. You create `APIUrl` by adding `auth/v1` suffix to your project endpoint. To find your project endpoint, go to `API Settings` page of your Supabase project dashboard.
 
 APIKey: The client-side API key. It allows "anonymous access" to your database, until the user has logged in. To find the `APIKey`, go to `API Settings` page of your Supabase project dashboard.
 
