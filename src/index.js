@@ -2,10 +2,10 @@ import API, { JSONHTTPError } from 'micro-api-client';
 import User from './user';
 
 const HTTPRegexp = /^http:\/\//;
-const defaultApiURL = `/.netlify/identity`;
+const defaultApiURL = `/auth/v1`;
 
 export default class GoTrue {
-  constructor({ APIUrl = defaultApiURL, audience = '', setCookie = false } = {}) {
+  constructor({ APIUrl = defaultApiURL, APIKey = '', audience = '', setCookie = false } = {}) {
     if (APIUrl.match(HTTPRegexp)) {
       console.warn(
         'Warning:\n\nDO NOT USE HTTP IN PRODUCTION FOR GOTRUE EVER!\nGoTrue REQUIRES HTTPS to work securely.',
@@ -18,7 +18,11 @@ export default class GoTrue {
 
     this.setCookie = setCookie;
 
-    this.api = new API(APIUrl);
+    this.api = new API(APIUrl, {
+      defaultHeaders: {
+        apikey: APIKey,
+      },
+    });
   }
 
   _request(path, options = {}) {
@@ -52,12 +56,20 @@ export default class GoTrue {
 
   login(email, password, remember) {
     this._setRememberHeaders(remember);
-    return this._request('/token', {
+    return this._request('/token?grant_type=password', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `grant_type=password&username=${encodeURIComponent(
-        email,
-      )}&password=${encodeURIComponent(password)}`,
+      body: JSON.stringify({ email, password }),
+    }).then((response) => {
+      User.removeSavedSession();
+      return this.createUser(response, remember);
+    });
+  }
+
+  loginWithRefreshToken(refreshToken, remember) {
+    this._setRememberHeaders(remember);
+    return this._request('/token?grant_type=refresh_token', {
+      method: 'POST',
+      body: JSON.stringify({ refresh_token: refreshToken }),
     }).then((response) => {
       User.removeSavedSession();
       return this.createUser(response, remember);

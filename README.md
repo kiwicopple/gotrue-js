@@ -23,7 +23,8 @@ import GoTrue from 'gotrue-js';
 // Instantiate the GoTrue auth client with an optional configuration
 
 auth = new GoTrue({
-  APIUrl: 'https://<your domain name>/.netlify/identity',
+  APIUrl: 'https://your-project.supabase.co/auth/v1',
+  APIKey: 'your-anon-key',
   audience: '',
   setCookie: false,
 });
@@ -31,7 +32,9 @@ auth = new GoTrue({
 
 ### GoTrue configuration
 
-APIUrl: The absolute path of the GoTrue endpoint. To find the `APIUrl`, go to `Identity` page of your Netlify site dashboard.
+APIUrl: The absolute path of the GoTrue endpoint. You create `APIUrl` by adding `auth/v1` suffix to your project endpoint. To find your project endpoint, go to `API Settings` page of your Supabase project dashboard.
+
+APIKey: The client-side API key. It allows "anonymous access" to your database, until the user has logged in. To find the `APIKey`, go to `API Settings` page of your Supabase project dashboard.
 
 audience(optional): `audience` is one of the pre-defined [JWT payload](https://tools.ietf.org/html/rfc7519#section-4.1.3) claims. It's an optional attribute which is set to be empty by default. If you were hosting your own identity service and wanted to support [multitenancy](https://en.wikipedia.org/wiki/Multitenancy), you would need `audience` to separate the users.
 
