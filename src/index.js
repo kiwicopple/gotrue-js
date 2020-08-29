@@ -18,15 +18,11 @@ export default class GoTrue {
 
     this.setCookie = setCookie;
 
-    this.api = new API(
-      APIUrl, 
-      { 
-        defaultHeaders: 
-        {
-          'apikey': APIKey
-        }
-      }
-    );
+    this.api = new API(APIUrl, {
+      defaultHeaders: {
+        apikey: APIKey,
+      },
+    });
   }
 
   _request(path, options = {}) {
