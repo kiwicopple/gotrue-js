@@ -12,7 +12,8 @@ npm install --save @supabase/gotrue-js
 
 ## API
 
-See XXX for more docs.
+
+### General functions
 
 ----
 
@@ -44,7 +45,7 @@ See XXX for more docs.
 <details>
   <summary>Parameters</summary>
 
-  #### `signup(options)`
+  #### `login(options)`
 
   ##### `options`
   
@@ -56,7 +57,6 @@ See XXX for more docs.
     password?: string
     provider?: string
   }
-
   ```
 </details>
 
@@ -68,63 +68,92 @@ See XXX for more docs.
 <details>
   <summary>Parameters</summary>
 
-  #### `signup(options)`
+  #### `forgotPassword(options)`
 
-  ##### `options`
-  
-  Either the email login details or the OAuth provider details.
-
-  ```ts
-  interface options {
-    email?: string
-    password?: string
-    provider?: string
-  }
-
-  ```
 </details>
 
-----
+`forgotPassword()`: sends a user an email to reset their password
 
-`jwt()`: parse a JWT
 
 <details>
   <summary>Parameters</summary>
 
-  #### `signup(options)`
+  #### `forgotPassword(options)`
 
-  ##### `options`
-  
-  Either the email login details or the OAuth provider details.
+</details>
+
+
+----
+
+`jwt()`: returns a decoded JWT, and optionally refreshes the token.
+
+
+<details>
+  <summary>Parameters</summary>
+
+  #### `jwt(jwt, options)`
 
   ```ts
-  interface options {
-    email?: string
-    password?: string
-    provider?: string
-  }
+  const jwt?: string // If you pass a JWT, it will verify and  
 
+  interface params {
+    refreshToken?: string // If provided, it will attempt to refresh the token.
+  }
+  ```
+</details>
+
+
+----
+
+### User funtions
+
+----
+
+`user()`: given a JWT, returns a user. If no JWT is passed, it will return the current logged in user.
+
+<details>
+  <summary>Parameters</summary>
+
+  #### `user(jwt?)`
+
+
+  ```ts
+  const jwt?: string // If you pass a JWT, it will verify and return the user.
   ```
 </details>
 
 ----
 
-### User specific funtions
+`user().logout()`: remove session for current user
 
-- `user()`: returns the current logged in user `// calls admin.getUser()`
-  - `jwt {string}` optional
-- `user().update()`: update the current logged-in user data `// calls admin.updateUser()`
-- `user().logout()`: remove session for current user
-- `user().jwt()`: gets the JWT for the logged in user
-  - `forceRefresh`: if passed in calls `// calls _refresh()`
+<details>
+  <summary>Parameters</summary>
+
+  #### `user().logout()`
+
+</details>
+
+----
 
 #### Hooks/callback
 
-- `onAuthStateChange()` - callback on any change to auth user
-  - `callbackFunction {function}` function to be called on change
+----
+
+`onAuthStateChange()` - callback on any change to auth user
+
+<details>
+  <summary>Parameters</summary>
+
+  #### `onAuthStateChange(callbackFunction)`
 
 
+  ```ts
+  const callbackFunction: function // function to be called on change
+  ```
+</details>
 
+
+----
 
 if we add the auth schema to the postgrest config:
 - can we only expose public via openapi spec
